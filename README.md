@@ -1,2 +1,2 @@
 # Narendra
-this is sample git hub action
+this is sample git hub action code
