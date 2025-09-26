@@ -24,7 +24,7 @@ resource "azurerm_subnet" "subnet" {
 resource "azurerm_network_interface" "network" {
   name = "Terraform-nic"
   location = azurerm_resource_group.RG.location
-  resource_group_name = azurerm_reosurce_group.RG.name
+  resource_group_name = azurerm_resource_group.RG.name
   ip_configuration {
     name = "Terraform"
     subnet_id = azurerm_subnet.subnet.id
