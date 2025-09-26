@@ -28,6 +28,6 @@ resource "azurerm_network_interface" "network" {
   ip_configuration {
     name = "Terraform"
     subnet_id = azurerm_subnet.subnet.id
-    private_ip_allocation = "Dynamic"
+    private_ip_address_allocation = "Dynamic"
   }
 }
