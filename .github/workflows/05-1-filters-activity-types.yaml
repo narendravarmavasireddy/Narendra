@@ -7,6 +7,6 @@ on:
       - synchronized
 jobs:
   echo:
-    runs-on: ubentu-latest
+    runs-on: ubuntu-latest
     steps:
       - run : echo "Running whenevr the PR is opened or synchronized AND base branch is master"
