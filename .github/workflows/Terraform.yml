@@ -1,6 +1,9 @@
 name: 'Terraform Deployment'
 
 on:
+  push:
+    branches:
+      - master
   workflow_dispatch:
 jobs:
   terraform:
@@ -21,7 +24,5 @@ jobs:
         run: terraform init
       - name: Terraform plan
         run: terraform plan
-      - name: Terraform apply
-        if: github.event.name == 'push'
-        run: terraform apply -auto-approve
-      
+      - name: Terraform Apply
+        run: terraform apply -auto-approve tfplan
