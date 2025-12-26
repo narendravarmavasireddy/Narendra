@@ -1,0 +1,40 @@
+name: Terraform Destroy (Manual - SP Login)
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_destroy:
+        description: "Type DESTROY to confirm"
+        required: true
+        default: ""
+
+jobs:
+  terraform-destroy:
+    runs-on: ubuntu-latest
+
+    environment:
+      name: test   # Enable approval here
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        working-directory: Terraform
+        run: terraform init
+
+      - name: Terraform Destroy
+        if: ${{ github.event.inputs.confirm_destroy == 'DESTROY' }}
+        working-directory: Terraform
+        run: |
+          terraform destroy \
+            -auto-approve \
+            -var-file=envs/Test/terraform.tfvars
