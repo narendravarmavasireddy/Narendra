@@ -27,6 +27,8 @@ jobs:
       - name: Terraform init
         run: terraform init
       - name: Terraform plan
+        working-directory: Terraform
         run: terraform plan -input=false -var-file=${{ env.TF_VARS_FILE }} -out=tfplan
       - name: Terraform Apply
+        working-directory: Terraform
         run: terraform apply -auto-approve tfplan
