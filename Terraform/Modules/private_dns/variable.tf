@@ -12,3 +12,8 @@ variable "vnet_id" {
   description = "Virtual network ID to link with private DNS zones"
   type        = string
 }
+
+variable "private_dns_zones" {
+  description = "Map of Private DNS zones to create and link"
+  type        = map(string)
+}
