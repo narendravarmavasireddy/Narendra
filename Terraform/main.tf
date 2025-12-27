@@ -51,6 +51,7 @@ module "private_dns" {
   source  = "./Modules/private_dns"
   rg_name = var.rg_name
   location = var.location
+  private_dns_zones  = var.private_dns_zones
   vnet_id = module.network.vnet_id   # or data.azurerm_virtual_network.id
 }
 
