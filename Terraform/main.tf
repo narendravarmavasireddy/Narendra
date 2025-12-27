@@ -62,7 +62,10 @@ module "storage_pe" {
   subnet_id             = module.network.storage_subnet_id
   resource_id           = module.storage.storage_id
   subresource_names     = ["blob"]
-  private_dns_zone_ids  = [module.private_dns.storage_dns_zone_id]
+#  private_dns_zone_ids  = [module.private_dns.storage_dns_zone_id]
+  private_dns_zone_ids = [
+    module.private_dns.private_dns_zone_ids["blob"]
+  ]
 }
 
 module "kv_pe" {
@@ -73,7 +76,10 @@ module "kv_pe" {
   subnet_id             = module.network.storage_subnet_id
   resource_id           = module.keyvault.kv_id
   subresource_names     = ["vault"]
-  private_dns_zone_ids  = [module.private_dns.keyvault_dns_zone_id]
+#  private_dns_zone_ids  = [module.private_dns.keyvault_dns_zone_id]
+  private_dns_zone_ids = [
+    module.private_dns.private_dns_zone_ids["kv"]
+  ]
 }
 
 
