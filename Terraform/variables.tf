@@ -14,3 +14,8 @@ variable "storage_account_name" {
     type = string
 }
 variable "key_vault_name" {}
+
+variable "private_dns_zones" {
+  description = "Private DNS zones to create"
+  type        = map(string)
+}
