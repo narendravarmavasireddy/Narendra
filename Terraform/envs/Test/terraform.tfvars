@@ -12,3 +12,9 @@ storage_subnet = "storage_subnet"
 
 storage_account_name = "datalakeadlsdemo01dev"
 key_vault_name       = "kv-test-demo-vasiexam"
+
+private_dns_zones = {
+  blob = "privatelink.blob.core.windows.net"
+  kv   = "privatelink.vaultcore.azure.net"
+  # dfs = "privatelink.dfs.core.windows.net"
+}
