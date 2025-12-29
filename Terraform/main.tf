@@ -1,7 +1,7 @@
 locals {
   pe_resource_ids = {
     storage    = module.storage.storage_id
-    dbfs       = module.databricks.workspace_id
+    dfs       = module.databricks.workspace_id
     databricks = module.databricks.workspace_id
     keyvault   = module.keyvault.kv_id
   }
