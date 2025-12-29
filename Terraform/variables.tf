@@ -21,11 +21,10 @@ variable "prefix" {
 }
 
 variable "private_endpoints" {
-  description = "Private Endpoint configuration map"
+  description = "Private Endpoint definitions"
   type = map(object({
-    resource_id        = string
-    subresource_names  = list(string)
-    dns_key            = string
+    subresource_names = list(string)
+    dns_key           = string
   }))
 }
 
