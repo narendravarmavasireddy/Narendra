@@ -15,6 +15,15 @@ variable "storage_account_name" {
 }
 variable "key_vault_name" {}
 
+variable "private_endpoints" {
+  description = "Private Endpoint configuration map"
+  type = map(object({
+    resource_id        = string
+    subresource_names  = list(string)
+    dns_key            = string
+  }))
+}
+
 variable "private_dns_zones" {
   description = "Private DNS zones to create"
   type        = map(string)
