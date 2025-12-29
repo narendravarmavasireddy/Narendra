@@ -13,6 +13,8 @@ storage_subnet = "storage_subnet"
 storage_account_name = "datalakeadlsvvvvtest"
 key_vault_name       = "kv-test-vvvexam"
 
+prefix   = "test-data"
+
 private_endpoints = {
   storage = {
     resource_id       = module.storage.storage_id
