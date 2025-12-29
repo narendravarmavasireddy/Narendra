@@ -16,7 +16,7 @@ key_vault_name       = "kv-test-vvvexam"
 prefix   = "test-data"
 
 private_endpoints = {
-  blob = {
+  storage = {
     subresource_names = ["blob"]
     dns_key           = "blob"
   }
