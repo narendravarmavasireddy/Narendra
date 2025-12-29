@@ -55,6 +55,22 @@ module "private_dns" {
   vnet_id = module.network.vnet_id   # or data.azurerm_virtual_network.id
 }
 
+module "private_endpoints" {
+  source   = "./Modules/private_endpoint"
+  for_each = var.private_endpoints
+  name      = "${var.prefix}-${each.key}-pe"
+  rg_name   = var.rg_name
+  location  = var.location
+  subnet_id = module.network.storage_subnet_id
+  resource_id        = each.value.resource_id
+  subresource_names  = each.value.subresource_names
+  private_dns_zone_ids = [
+    module.private_dns.private_dns_zone_ids[each.value.dns_key]
+  ]
+}
+
+
+/*
 module "storage_pe" {
   source                = "./Modules/private_endpoint"
   name                  = "storage-pe"
@@ -69,9 +85,9 @@ module "storage_pe" {
   ]
 }
 
-module "storage_pe" {
+module "dbfs_pe" {
   source                = "./Modules/private_endpoint"
-  name                  = "databricks-pe"
+  name                  = "dbfs-pe"
   rg_name               = var.rg_name
   location              = var.location
   subnet_id             = module.network.storage_subnet_id
@@ -83,7 +99,7 @@ module "storage_pe" {
   ]
 }
 
-module "storage_pe" {
+module "databricks_pe" {
   source                = "./Modules/private_endpoint"
   name                  = "databricks-pe"
   rg_name               = var.rg_name
@@ -110,5 +126,5 @@ module "kv_pe" {
     module.private_dns.private_dns_zone_ids["kv"]
   ]
 }
-
+*/
 
