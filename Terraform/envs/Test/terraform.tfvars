@@ -10,8 +10,8 @@ public_subnet_name  = "public_subnet"
 private_subnet_name = "private_subnet"
 storage_subnet = "storage_subnet"
 
-storage_account_name = "datalakeadlsvvvvtest"
-key_vault_name       = "kv-test-vvvexam"
+storage_account_name = "datalakeadlszzzztest"
+key_vault_name       = "kv-test-zzzexam"
 
 prefix   = "test-data"
 
