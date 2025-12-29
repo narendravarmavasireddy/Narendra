@@ -1,3 +1,12 @@
+locals {
+  pe_resource_ids = {
+    storage    = module.storage.storage_id
+    dbfs       = module.databricks.workspace_id
+    databricks = module.databricks.workspace_id
+    keyvault   = module.keyvault.kv_id
+  }
+}
+
 # 1. Resource Group for Databricks
 module "resource_group" {
   source             = "./Modules/resource_group"
