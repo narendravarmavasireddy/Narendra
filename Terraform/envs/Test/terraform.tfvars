@@ -16,13 +16,13 @@ key_vault_name       = "kv-test-zzzexam"
 prefix   = "test-data"
 
 private_endpoints = {
-  storage = {
+  storage_blob = {
     subresource_names = ["blob"]
     dns_key           = "blob"
   }
 
-  dfs = {
-    subresource_names = ["databricks_dfs"]
+  storage_dfs = {
+    subresource_names = ["dfs"]
     dns_key           = "dfs"
   }
 
