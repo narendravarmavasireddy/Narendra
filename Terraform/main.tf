@@ -71,7 +71,7 @@ module "private_endpoints" {
   rg_name   = var.rg_name
   location  = var.location
   subnet_id = module.network.storage_subnet_id
-  resource_id        = each.value.resource_id
+  resource_id        = local.pe_resource_ids[each.key]
   subresource_names  = each.value.subresource_names
   private_dns_zone_ids = [
     module.private_dns.private_dns_zone_ids[each.value.dns_key]
