@@ -69,6 +69,34 @@ module "storage_pe" {
   ]
 }
 
+module "storage_pe" {
+  source                = "./Modules/private_endpoint"
+  name                  = "databricks-pe"
+  rg_name               = var.rg_name
+  location              = var.location
+  subnet_id             = module.network.storage_subnet_id
+  resource_id           = module.databricks.workspace_id
+  subresource_names     = ["dfs"]
+#  private_dns_zone_ids  = [module.private_dns.storage_dns_zone_id]
+  private_dns_zone_ids = [
+    module.private_dns.private_dns_zone_ids["dfs"]
+  ]
+}
+
+module "storage_pe" {
+  source                = "./Modules/private_endpoint"
+  name                  = "databricks-pe"
+  rg_name               = var.rg_name
+  location              = var.location
+  subnet_id             = module.network.storage_subnet_id
+  resource_id           = module.databricks.workspace_id
+  subresource_names     = ["databricks_ui_api"]
+#  private_dns_zone_ids  = [module.private_dns.storage_dns_zone_id]
+  private_dns_zone_ids = [
+    module.private_dns.private_dns_zone_ids["uiapi"]
+  ]
+}
+
 module "kv_pe" {
   source                = "./Modules/private_endpoint"
   name                  = "kv-pe"

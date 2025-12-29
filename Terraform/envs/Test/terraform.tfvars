@@ -16,5 +16,6 @@ key_vault_name       = "kv-test-demoexam"
 private_dns_zones = {
   blob = "privatelink.blob.core.windows.net"
   kv   = "privatelink.vaultcore.azure.net"
-  # dfs = "privatelink.dfs.core.windows.net"
+  dfs = "privatelink.dfs.core.windows.net"
+  uiapi = "privatelink.azuredatabricks.net"
 }
