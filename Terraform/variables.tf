@@ -15,8 +15,6 @@ variable "storage_account_name" {
 }
 variable "key_vault_name" {}
 
-prefix   = "test-data"
-
 variable "private_endpoints" {
   description = "Private Endpoint configuration map"
   type = map(object({
