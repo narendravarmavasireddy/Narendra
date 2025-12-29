@@ -17,22 +17,21 @@ prefix   = "test-data"
 
 private_endpoints = {
   storage = {
-    resource_id       = module.storage.storage_id
     subresource_names = ["blob"]
     dns_key           = "blob"
   }
+
   dbfs = {
-    resource_id       = module.databricks.workspace_id
     subresource_names = ["dfs"]
     dns_key           = "dfs"
   }
+
   databricks = {
-    resource_id       = module.databricks.workspace_id
     subresource_names = ["databricks_ui_api"]
     dns_key           = "uiapi"
   }
+
   keyvault = {
-    resource_id       = module.keyvault.kv_id
     subresource_names = ["vault"]
     dns_key           = "kv"
   }
