@@ -21,8 +21,8 @@ private_endpoints = {
     dns_key           = "blob"
   }
 
-  dbfs = {
-    subresource_names = ["databricks_dfs"]
+  dfs = {
+    subresource_names = ["dfs"]
     dns_key           = "dfs"
   }
 
