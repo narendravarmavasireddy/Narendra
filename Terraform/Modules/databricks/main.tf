@@ -14,6 +14,7 @@ resource "azurerm_databricks_workspace" "workspace" {
   resource_group_name         = var.databricks_rg_name
   sku                         = "premium"
   managed_resource_group_name = "${var.databricks_name}-mrg"
+  public_network_access_enabled = false
 
   custom_parameters {
     no_public_ip = true
