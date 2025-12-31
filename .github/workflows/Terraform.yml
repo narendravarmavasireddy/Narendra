@@ -17,7 +17,7 @@ env:
 jobs:
   terraform:
     runs-on: ubuntu-latest
-    #environment: Dev
+    environment: Dev
 
     steps:
       - name: checkout Repository
