@@ -37,12 +37,21 @@ jobs:
 
       - name: Terraform Init
         working-directory: Terraform
-        run: terraform init
+        run: terraform init -reconfigure
+
+      - name: Select Workspace
+        working-directory: Terraform
+        run: |
+          terraform workspace select test || terraform workspace new test
+
+      - name: Terraform State List
+        working-directory: Terraform
+        run: terraform state list
 
       - name: Terraform Destroy
         if: ${{ github.event.inputs.confirm_destroy == 'DESTROY' }}
         working-directory: Terraform
-        run: |
-          terraform destroy \
+        run: terraform destroy -auto-approve -var-file=envs/Test/terraform.tfvars
+
             -auto-approve \
             -var-file=envs/Test/terraform.tfvars
