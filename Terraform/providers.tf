@@ -1,7 +1,6 @@
 provider "azurerm" {
   features {}
   subscription_id = "8815992d-6d35-46b1-bd5d-71421ea52e14"
-  use_oidc = true
 }
 
 provider "azapi" {}
