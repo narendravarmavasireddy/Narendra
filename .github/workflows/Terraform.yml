@@ -33,15 +33,13 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           #creds: ${{ secrets.AZURE_CREDENTIALS }}
-      - name: Debug ARM auth mode
-        run: |
-          echo "ARM_CLIENT_ID=$ARM_CLIENT_ID"
-          echo "ARM_TENANT_ID=$ARM_TENANT_ID"
-          echo "ARM_SUBSCRIPTION_ID=$ARM_SUBSCRIPTION_ID"
-          echo "ARM_OIDC_TOKEN=${ARM_OIDC_TOKEN:+set}"
 
       - name: Terraform init
         working-directory: Terraform
+        env:
+          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
         run: terraform init
       - name: Terraform plan
         working-directory: Terraform
