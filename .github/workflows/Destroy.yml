@@ -1,4 +1,4 @@
-name: Terraform Destroy (Manual - SP Login)
+name: Terraform Destroy
 
 on:
   workflow_dispatch:
