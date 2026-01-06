@@ -48,3 +48,5 @@ variable "metastore_owner" {
   type        = string
 }
 
+variable "region" {}
+
