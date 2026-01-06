@@ -8,7 +8,7 @@ variable "storage_root" {
   type        = string
 }
 
-variable "location" {
+variable "region" {
   description = "Azure region for the metastore"
   type        = string
 }
