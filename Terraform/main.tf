@@ -61,7 +61,7 @@ module "databricks_metastore" {
 
   metastore_name = var.metastore_name
   storage_root   = var.metastore_storage_root
-  location         = var.location
+  region         = var.region
   owner          = var.metastore_owner
   workspace_id   = module.databricks.workspace_id
 }
