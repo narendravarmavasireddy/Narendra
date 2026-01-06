@@ -43,3 +43,9 @@ private_dns_zones = {
   dfs = "privatelink.dfs.core.windows.net"
   uiapi = "privatelink.azuredatabricks.net"
 }
+
+metastore_name = "uc-metastore-test"
+
+metastore_storage_root = "abfss://unitycatalog@sttestuc001.dfs.core.windows.net/"
+
+metastore_owner = "uc-admins"
