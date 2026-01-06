@@ -1,7 +1,7 @@
 resource "databricks_metastore" "this" {
   name         = var.metastore_name
   storage_root = var.storage_root
-  location       = var.location
+  region       = var.region
   owner        = var.owner
 
   lifecycle {
