@@ -1,5 +1,4 @@
 location            = "eastus"
-region              = "eastus"
 rg_name             = "Terraform-automation"
 databricks_rg_name  = "rg-datalake-databricks-int-test"
 databricks_name     = "fmc-demo-workspace-test"
