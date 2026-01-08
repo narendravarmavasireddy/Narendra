@@ -33,20 +33,5 @@ variable "private_dns_zones" {
   type        = map(string)
 }
 
-variable "metastore_name" {
-  description = "Unity Catalog metastore name"
-  type        = string
-}
 
-variable "metastore_storage_root" {
-  description = "ADLS Gen2 root path for Unity Catalog"
-  type        = string
-}
-
-variable "metastore_owner" {
-  description = "Owner of the Unity Catalog metastore"
-  type        = string
-}
-
-variable "region" {}
 
