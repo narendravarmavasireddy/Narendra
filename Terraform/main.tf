@@ -56,16 +56,6 @@ module "databricks" {
   vnet_id                               = module.network.vnet_id
 }
 
-module "databricks_metastore" {
-  source = "./Modules/databricks_metastore"
-
-  metastore_name = var.metastore_name
-  storage_root   = var.metastore_storage_root
-  region         = var.region
-  owner          = var.metastore_owner
-  workspace_id   = module.databricks.workspace_id
-}
-
 module "private_dns" {
   source  = "./Modules/private_dns"
   rg_name = var.rg_name
