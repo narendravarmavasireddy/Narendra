@@ -1,9 +1,6 @@
-name: 'Terraform Deployment'
+name: Terraform Single Run – RG, Manual Approval, RBAC
 
 on:
-  # push:
-  #   branches:
-  #     - master
   workflow_dispatch:
 
 permissions:
@@ -14,37 +11,151 @@ env:
   TF_VERSION: 1.6.6
   WORKING_DIR: Terraform
   TF_VARS_FILE: envs/Test/terraform.tfvars
+
 jobs:
-  terraform:
+  # ------------------------------------------------------------
+  # JOB 1: Create Resource Group
+  # ------------------------------------------------------------
+  create-resource-group:
+    name: Create Resource Group
     runs-on: ubuntu-latest
     environment: Dev
-    env:
-      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-      ARM_USE_OIDC: true # Explicitly enables OIDC auth
 
     steps:
-      - name: checkout Repository
-        uses: actions/checkout@v2
-      - name: Set Up Terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: ${{ env.TF_VERSION }}
-      - name: Azure login
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Azure Login (OIDC)
         uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          #creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Terraform init
-        working-directory: Terraform
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+
+      - name: Terraform Init
+        working-directory: ${{ env.WORKING_DIR }}
         run: terraform init
+
       - name: Terraform plan
-        working-directory: Terraform
+        working-directory: ${{ env.WORKING_DIR }}
         run: terraform plan -input=false -var-file=${{ env.TF_VARS_FILE }} -out=tfplan
-      - name: Terraform Apply
-        working-directory: Terraform
-        run: terraform apply -auto-approve tfplan
+
+      - name: Terraform Apply – Resource Group only
+        working-directory: ${{ env.WORKING_DIR }}
+        run: terraform apply -target=module.resource_group -auto-approve
+
+  # ------------------------------------------------------------
+  # JOB 2: MANUAL APPROVAL (Client assigns User Access Admin)
+  # ------------------------------------------------------------
+  manual-approval:
+    name: Manual Approval – Assign User Access Administrator
+    needs: create-resource-group
+    runs-on: ubuntu-latest
+    environment: Test   # ⬅ protected environment
+
+    steps:
+      - name: Await client manual action
+        run: |
+          echo "ACTION REQUIRED:"
+          echo "1. Client must assign 'User Access Administrator'"
+          echo "   to the pipeline Service Principal on the Resource Group."
+          echo "2. After assignment, approve this environment."
+          echo ""
+          echo "This pipeline will resume automatically after approval + wait timer."
+
+  # ------------------------------------------------------------
+  # JOB 3: Continue Deployment + RBAC Assignment
+  # ------------------------------------------------------------
+  continue-deployment:
+    name: Continue Deployment & RBAC
+    needs: manual-approval
+    runs-on: ubuntu-latest
+    environment: Dev
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Azure Login (OIDC) – Refresh permissions
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+
+      - name: Terraform Init
+        working-directory: ${{ env.WORKING_DIR }}
+        run: terraform init
+
+      - name: Terraform plan
+        working-directory: ${{ env.WORKING_DIR }}
+        run: terraform plan -input=false -var-file=${{ env.TF_VARS_FILE }} -out=tfplan
+
+      - name: Terraform Apply – Remaining Resources & RBAC
+        working-directory: ${{ env.WORKING_DIR }}
+        run: terraform apply -auto-approve -var-file=${{ env.TF_VARS_FILE }}
+
+
+
+
+
+# name: 'Terraform Deployment'
+
+# on:
+#   # push:
+#   #   branches:
+#   #     - master
+#   workflow_dispatch:
+
+# permissions:
+#   id-token: write
+#   contents: read
+
+# env:
+#   TF_VERSION: 1.6.6
+#   WORKING_DIR: Terraform
+#   TF_VARS_FILE: envs/Test/terraform.tfvars
+# jobs:
+#   terraform:
+#     runs-on: ubuntu-latest
+#     environment: Dev
+#     env:
+#       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+#       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+#       ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+#       ARM_USE_OIDC: true # Explicitly enables OIDC auth
+
+#     steps:
+#       - name: checkout Repository
+#         uses: actions/checkout@v2
+#       - name: Set Up Terraform
+#         uses: hashicorp/setup-terraform@v2
+#         with:
+#           terraform_version: ${{ env.TF_VERSION }}
+#       - name: Azure login
+#         uses: azure/login@v2
+#         with:
+#           client-id: ${{ secrets.AZURE_CLIENT_ID }}
+#           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+#           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+#           #creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+#       - name: Terraform init
+#         working-directory: Terraform
+#         run: terraform init
+#       - name: Terraform plan
+#         working-directory: Terraform
+#         run: terraform plan -input=false -var-file=${{ env.TF_VARS_FILE }} -out=tfplan
+#       - name: Terraform Apply
+#         working-directory: Terraform
+#         run: terraform apply -auto-approve tfplan
