@@ -20,7 +20,11 @@ jobs:
     name: Create Resource Group
     runs-on: ubuntu-latest
     environment: Dev
-
+    env:
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      ARM_USE_OIDC: true # Explicitly enables OIDC auth
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -76,6 +80,11 @@ jobs:
     needs: manual-approval
     runs-on: ubuntu-latest
     environment: Dev
+    env:
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      ARM_USE_OIDC: true # Explicitly enables OIDC auth
 
     steps:
       - name: Checkout repository
