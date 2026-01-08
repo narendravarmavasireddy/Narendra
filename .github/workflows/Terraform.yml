@@ -51,7 +51,7 @@ jobs:
 
       - name: Terraform Apply – Resource Group only
         working-directory: ${{ env.WORKING_DIR }}
-        run: terraform apply -target=module.resource_group -auto-approve
+        run: terraform apply -target=module.resource_group -var-file=envs/Test/terraform.tfvars -auto-approve
 
   # ------------------------------------------------------------
   # JOB 2: MANUAL APPROVAL (Client assigns User Access Admin)
