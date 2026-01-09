@@ -1,8 +1,3 @@
-data "azurerm_user_assigned_identity" "databricks_mrg_identity" {
-  name                = "dbmanagedidentity"
-  resource_group_name = azurerm_databricks_workspace.workspace.managed_resource_group_name
-}
-
 # --------------------------------------------------
 # Storage Account RBAC
 # --------------------------------------------------
