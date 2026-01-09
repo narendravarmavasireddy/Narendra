@@ -7,3 +7,9 @@ data "azurerm_resources" "databricks_mrg_identities" {
   ]
 }
 
+locals {
+  databricks_mrg_identity = one([
+    for r in data.azurerm_resources.databricks_mrg_identities.resources :
+    r if r.name == "dbmanagedidentity"
+  ])
+}
