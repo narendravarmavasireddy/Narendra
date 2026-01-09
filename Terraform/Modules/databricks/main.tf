@@ -26,6 +26,10 @@ resource "azurerm_databricks_workspace" "workspace" {
     private_subnet_network_security_group_association_id = var.private_nsg_assoc_id
   }
 
+data "azurerm_user_assigned_identity" "databricks_mrg_identity" {
+  name                = "dbmanagedidentity"
+  resource_group_name = azurerm_databricks_workspace.workspace.managed_resource_group_name
+}
   depends_on = [azurerm_databricks_access_connector.connector]
 }
 
