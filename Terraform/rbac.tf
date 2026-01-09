@@ -11,7 +11,7 @@ resource "azurerm_role_assignment" "sp_storage_blob_contributor" {
 resource "azurerm_role_assignment" "databricks_mi_storage_blob_contributor" {
   scope                = module.storage.storage_id
   role_definition_name = "Storage Blob Data Contributor"
-  principal_id         = module.databricks.managed_identity_principal_id
+  principal_id         = module.databricks.access_connector_principal_id
 }
 
 # --------------------------------------------------
@@ -37,5 +37,5 @@ resource "azurerm_role_assignment" "sp_keyvault_admin" {
 resource "azurerm_role_assignment" "databricks_mi_keyvault_secrets_user" {
   scope                = module.keyvault.kv_id
   role_definition_name = "Key Vault Secrets User"
-  principal_id         = var.pipeline_sp_object_id
+  principal_id         = module.databricks.access_connector_principal_id
 }
