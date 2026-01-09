@@ -32,6 +32,10 @@ variable "private_dns_zones" {
   description = "Private DNS zones to create"
   type        = map(string)
 }
+variable "pipeline_sp_object_id" {
+  type        = string
+  description = "Object ID of the pipeline Service Principal"
+}
 
 
 

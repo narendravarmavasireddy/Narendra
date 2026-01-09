@@ -49,3 +49,5 @@ metastore_name = "uc-metastore-test"
 metastore_storage_root = "abfss://unitycatalog@sttestuc001.dfs.core.windows.net/"
 
 metastore_owner = "uc-admins"
+
+principal_id         = "f2306d81-6f2e-4e8a-b203-44cd77f8c32f"
