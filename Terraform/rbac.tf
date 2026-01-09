@@ -1,3 +1,8 @@
+data "azurerm_user_assigned_identity" "databricks_mrg_identity" {
+  name                = "dbmanagedidentity"
+  resource_group_name = azurerm_databricks_workspace.workspace.managed_resource_group_name
+}
+
 # --------------------------------------------------
 # Storage Account RBAC
 # --------------------------------------------------
@@ -11,7 +16,7 @@ resource "azurerm_role_assignment" "sp_storage_blob_contributor" {
 resource "azurerm_role_assignment" "databricks_mi_storage_blob_contributor" {
   scope                = module.storage.storage_id
   role_definition_name = "Storage Blob Data Contributor"
-  principal_id         = module.databricks.access_connector_principal_id
+  principal_id         = data.azurerm_user_assigned_identity.databricks_mrg_identity.principal_id
 }
 
 # --------------------------------------------------
@@ -37,5 +42,5 @@ resource "azurerm_role_assignment" "sp_keyvault_admin" {
 resource "azurerm_role_assignment" "databricks_mi_keyvault_secrets_user" {
   scope                = module.keyvault.kv_id
   role_definition_name = "Key Vault Secrets User"
-  principal_id         = module.databricks.access_connector_principal_id
+  principal_id         = data.azurerm_user_assigned_identity.databricks_mrg_identity.principal_id
 }
