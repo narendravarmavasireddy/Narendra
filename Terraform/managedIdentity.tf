@@ -10,8 +10,7 @@ data "azapi_resource" "databricks_mrg_identity" {
 
 
 locals {
-  databricks_mrg_principal_id = jsondecode(
-    data.azapi_resource.databricks_mrg_identity.output
-  ).properties.principalId
+  databricks_mrg_principal_id =
+    data.azapi_resource.databricks_mrg_identity.output.properties.principalId
 }
 
