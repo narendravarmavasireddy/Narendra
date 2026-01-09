@@ -31,7 +31,7 @@ resource "azurerm_role_assignment" "sp_databricks_contributor" {
 resource "azurerm_role_assignment" "sp_keyvault_admin" {
   scope                = module.keyvault.keyvault_id
   role_definition_name = "Key Vault Administrator"
-  principal_id = data.azurerm_client_config.current.object_id
+  principal_id         = var.pipeline_sp_object_id
 }
 
 resource "azurerm_role_assignment" "databricks_mi_keyvault_secrets_user" {
