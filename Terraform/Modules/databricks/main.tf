@@ -17,10 +17,6 @@ resource "azurerm_databricks_workspace" "workspace" {
   public_network_access_enabled = false
   network_security_group_rules_required = "NoAzureDatabricksRules"
 
-  identity {
-    type = "SystemAssigned"
-  }
-
   custom_parameters {
     no_public_ip = true
     virtual_network_id = var.vnet_id
