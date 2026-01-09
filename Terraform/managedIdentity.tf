@@ -1,3 +1,5 @@
+data "azurerm_client_config" "current" {}
+
 data "azapi_resource" "databricks_mrg_identity" {
   type      = "Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31"
   name      = "dbmanagedidentity"
