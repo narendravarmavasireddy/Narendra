@@ -10,6 +10,9 @@ resource "azurerm_storage_account" "datalake" {
   identity {
     type = "SystemAssigned"
   }
+  tags = {
+    environment = "Test"
+  }
 }
 
 output "storage_id" {
