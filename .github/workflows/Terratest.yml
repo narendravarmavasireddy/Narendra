@@ -50,6 +50,6 @@ jobs:
           go-version: "1.21"
 
       - name: Run Terratest (Read-only)
-        working-directory: test
+        working-directory: Test
         run: |
           go test -v
