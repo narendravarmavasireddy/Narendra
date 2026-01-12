@@ -12,6 +12,7 @@ permissions:
 jobs:
   terraform-test:
     runs-on: ubuntu-latest
+    environment: Dev
 
     env:
       ARM_USE_OIDC: true
