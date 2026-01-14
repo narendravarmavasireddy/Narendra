@@ -75,7 +75,7 @@ jobs:
   # ------------------------------------------------------------
   # JOB 3: Continue Deployment + RBAC Assignment
   # ------------------------------------------------------------
-  continue-deployment:
+  Resource-Deployment:
     name: Continue Deployment & RBAC
     needs: manual-approval
     runs-on: ubuntu-latest
@@ -115,56 +115,50 @@ jobs:
         run: terraform apply -auto-approve -var-file=${{ env.TF_VARS_FILE }}
 
 
+  terraform-test:
+    name: Unit Testing By Terratest
+    needs: Resource-Deployment
+    runs-on: ubuntu-latest
+    environment: Dev
 
+    env:
+      ARM_USE_OIDC: true
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      TF_IN_AUTOMATION: true
 
+    steps:
+      - uses: actions/checkout@v4
 
-# name: 'Terraform Deployment'
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-# on:
-#   # push:
-#   #   branches:
-#   #     - master
-#   workflow_dispatch:
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.6
 
-# permissions:
-#   id-token: write
-#   contents: read
+      - name: Terraform Init
+        working-directory: Terraform
+        run: terraform init -input=false
 
-# env:
-#   TF_VERSION: 1.6.6
-#   WORKING_DIR: Terraform
-#   TF_VARS_FILE: envs/Test/terraform.tfvars
-# jobs:
-#   terraform:
-#     runs-on: ubuntu-latest
-#     environment: Dev
-#     env:
-#       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-#       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-#       ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-#       ARM_USE_OIDC: true # Explicitly enables OIDC auth
+      - name: Terraform Validate
+        working-directory: Terraform
+        run: terraform validate
 
-#     steps:
-#       - name: checkout Repository
-#         uses: actions/checkout@v2
-#       - name: Set Up Terraform
-#         uses: hashicorp/setup-terraform@v2
-#         with:
-#           terraform_version: ${{ env.TF_VERSION }}
-#       - name: Azure login
-#         uses: azure/login@v2
-#         with:
-#           client-id: ${{ secrets.AZURE_CLIENT_ID }}
-#           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-#           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-#           #creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Terraform Plan (Drift Check)
+        working-directory: Terraform
+        run: terraform plan -var-file=envs/Test/terraform.tfvars
 
-#       - name: Terraform init
-#         working-directory: Terraform
-#         run: terraform init
-#       - name: Terraform plan
-#         working-directory: Terraform
-#         run: terraform plan -input=false -var-file=${{ env.TF_VARS_FILE }} -out=tfplan
-#       - name: Terraform Apply
-#         working-directory: Terraform
-#         run: terraform apply -auto-approve tfplan
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.21"
+
+      - name: Run Terratest (Read-only)
+        working-directory: Test
+        run: |
+          go mod tidy
+          go test -v ./test -timeout 30m
