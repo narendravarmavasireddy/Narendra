@@ -48,6 +48,5 @@ output "storage_account_id" {
   value = module.storage.storage_id
 }
 output "databricks_managed_resource_group_name" {
-  description = "Databricks managed resource group name"
   value       = module.databricks.managed_resource_group_name
 }
