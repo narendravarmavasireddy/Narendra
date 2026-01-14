@@ -13,7 +13,7 @@ resource "azurerm_storage_account" "datalake" {
 }
 
 resource "azurerm_storage_container" "container" {
-  name                  = "FMC-Datalake"
+  name                  = "fmcdatalake"
   storage_account_id    = azurerm_storage_account.datalake.id
   container_access_type = "private"
 }
