@@ -161,4 +161,4 @@ jobs:
         working-directory: Terratest
         run: |
           go mod tidy
-          go test -v ./test -timeout 30m
+          go test -v ./Test -timeout 30m
