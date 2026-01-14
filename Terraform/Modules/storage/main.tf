@@ -7,12 +7,15 @@ resource "azurerm_storage_account" "datalake" {
   is_hns_enabled           = true
   public_network_access_enabled = false
 
-  identity {
-    type = "SystemAssigned"
-  }
   tags = {
     environment = "Test"
   }
+}
+
+resource "azurerm_storage_container" "container" {
+  name                  = "FMC-Datalake"
+  storage_account_id    = azurerm_storage_account.datalake.id
+  container_access_type = "private"
 }
 
 output "storage_id" {
