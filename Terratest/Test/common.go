@@ -8,7 +8,7 @@ import (
 
 func terraformOptions(t *testing.T) *terraform.Options {
     return &terraform.Options{
-        TerraformDir: "../../Terraform/envs/Test",
+        TerraformDir: "../../Terraform",
         NoColor:      true,
     }
 }
